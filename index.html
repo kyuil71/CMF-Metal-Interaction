@@ -56,21 +56,23 @@
   @keyframes breath{0%,100%{transform:scale(1); opacity:.85} 50%{transform:scale(1.035); opacity:1}}
   @media (prefers-reduced-motion:reduce){ .hint span{animation:none;} }
 
+  .stagecol{display:flex; flex-direction:column; gap:10px; min-width:0;}
   .hud{
-    position:absolute; left:12px; top:12px; display:flex; flex-direction:column; gap:6px;
-    pointer-events:none; z-index:2;
+    display:grid; grid-template-columns:1fr auto; align-items:center; gap:6px 14px;
   }
   .hud .status{
+    grid-column:1 / -1;
     font-size:12.5px; font-weight:600; color:#fff;
-    background:rgba(10,14,22,.55); border:1px solid rgba(255,255,255,.12);
-    border-radius:8px; padding:6px 10px; backdrop-filter:blur(3px);
-    max-width:420px; line-height:1.5;
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:10px; padding:8px 12px;
+    line-height:1.5; min-height:calc(1.5em*2 + 16px);   /* 두 줄 높이를 미리 확보해 문구가 바뀌어도 화면이 들썩이지 않음 */
+    display:flex; align-items:center;
   }
   .hud .status b{color:var(--accent2);}
   .hud .status b.ok{color:#6dff9e;}
   .hud .status b.no{color:#ff6d6d;}
   .gauge{
-    width:180px; height:8px; border-radius:99px; overflow:hidden;
+    width:100%; height:8px; border-radius:99px; overflow:hidden;
     background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.15);
   }
   .gauge i{
@@ -214,7 +216,8 @@
     .seg button small{font-size:12px;}
     .stage{aspect-ratio:4/5;}
     .cam-tip{display:none;}
-    .hud .status{max-width:calc(100vw - 50px);}
+    .gauge-label{font-size:16px;}
+    .hud .status{min-height:calc(1.5em*3 + 16px);}
     .slider-row{grid-template-columns:110px 1fr 48px;}
     .slider-row output{font-size:16px;}
     .check-row input{width:20px; height:20px;}
@@ -230,14 +233,16 @@
 
 <div class="app">
 
-  <div class="stage" id="stage">
-    <div class="hud">
+  <div class="stagecol">
+    <div class="hud" role="status" aria-live="polite">
       <div class="status" id="status"></div>
       <div class="gauge"><i id="gaugeFill"></i></div>
       <div class="gauge-label">가하는 힘 (자중 + 누르기)</div>
     </div>
+  <div class="stage" id="stage">
     <div class="cam-tip">금속을 잡고 위아래로 끌기 = 올리기 · 내리기 · 누르기 · <b>Space</b> = 꾹 누르기<br>빈 공간 드래그 = 회전 · 휠 = 확대</div>
     <div class="loading" id="loading">점토 반죽 중…</div>
+  </div>
   </div>
 
   <aside class="panel">
